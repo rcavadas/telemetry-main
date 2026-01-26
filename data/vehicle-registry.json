@@ -1,0 +1,214 @@
+{
+  "vehicles": {
+    "218LSAB2025000004": {
+      "deviceInfo": {
+        "deviceId": "218LSAB2025000004",
+        "deviceType": "Sinocastel",
+        "protocolIds": [
+          "0x1001"
+        ],
+        "firmwareVersion": "B4.3.9.2_BRL 2024-01-25 01",
+        "hardwareVersion": "D-218LSA-B  HDC-36V",
+        "installationDate": "2025-05-28",
+        "status": "active"
+      },
+      "vehicleSpecs": {
+        "brand": "Audi",
+        "model": "A4 Quattro Turbo",
+        "year": "2014",
+        "plate": "RJO-9999",
+        "engine": {
+          "displacement": "2.0L TFSI",
+          "fuelType": "gasoline",
+          "power": "211cv"
+        },
+        "fuel": {
+          "tankCapacityLiters": 60,
+          "fuelType": "gasoline",
+          "estimatedConsumption": "10.5 km/L cidade, 13.8 km/L estrada"
+        },
+        "transmission": "Tiptronic",
+        "category": "Sedan"
+      },
+      "telemetryConfig": {
+        "currentFuel": {
+          "status": "UNRELIABLE",
+          "interpretation": "FALLBACK_VALUE",
+          "calibrated": false,
+          "notes": "Valor fixo 512 - sensor não funcional"
+        },
+        "totalFuel": {
+          "status": "RELIABLE",
+          "unit": "deciliters",
+          "conversion": "value / 10",
+          "calibrated": true
+        },
+        "odometer": {
+          "status": "LIMITED",
+          "interpretation": "trip_distance",
+          "notes": "Não representa hodômetro total do veículo"
+        }
+      },
+      "operationalData": {
+        "usage": "static",
+        "location": "Rio de Janeiro/RJ",
+        "averageSpeed": 0,
+        "totalDistance": 0,
+        "fuelConsumption": 0,
+        "lastUpdate": "2025-05-29"
+      },
+      "observations": {
+        "fuelGauge": "~5-10% conforme painel físico",
+        "odometerReading": 135965,
+        "issues": [
+          "currentFuel sempre 512 - não confiável",
+          "Painel mostra tanque quase vazio mas telemetria 50%"
+        ]
+      }
+    },
+    "218LSAB2025000002": {
+      "deviceInfo": {
+        "deviceId": "218LSAB2025000002",
+        "deviceType": "Sinocastel",
+        "protocolIds": [
+          "0x1001",
+          "0x3400"
+        ],
+        "firmwareVersion": "B4.3.9.2_BRL 2024-01-25 01",
+        "hardwareVersion": "D-218LSA-B  HDC-36V",
+        "installationDate": "2025-05-28",
+        "status": "active"
+      },
+      "vehicleSpecs": {
+        "brand": "Honda",
+        "model": "Civic",
+        "year": "2021",
+        "plate": "SPO-5678",
+        "engine": {
+          "displacement": "2.0L",
+          "fuelType": "gasoline",
+          "power": "158 cv"
+        },
+        "fuel": {
+          "tankCapacityLiters": 65,
+          "fuelType": "gasoline",
+          "estimatedConsumption": "11.8 km/L cidade, 14.7 km/L estrada"
+        },
+        "transmission": "CVT",
+        "category": "Sedan"
+      },
+      "telemetryConfig": {
+        "currentFuel": {
+          "status": "UNRELIABLE",
+          "interpretation": "FALLBACK_VALUE",
+          "calibrated": false,
+          "notes": "Valor fixo 512 - sensor não funcional"
+        },
+        "totalFuel": {
+          "status": "RELIABLE",
+          "unit": "deciliters",
+          "conversion": "value / 10",
+          "calibrated": true
+        },
+        "odometer": {
+          "status": "LIMITED",
+          "interpretation": "trip_distance",
+          "notes": "Não representa hodômetro total do veículo"
+        }
+      },
+      "operationalData": {
+        "usage": "mobile",
+        "location": "São Paulo/RJ",
+        "averageSpeed": 45.2,
+        "totalDistance": 57.16,
+        "fuelConsumption": 17.3,
+        "lastUpdate": "2025-01-13"
+      },
+      "observations": {
+        "fuelGauge": "~50% conforme painel físico",
+        "odometerReading": 199120,
+        "issues": [
+          "currentFuel sempre 512 - não confiável",
+          "Painel mostra meio tanque coincide com telemetria 50%"
+        ]
+      }
+    },
+    "218LSAB2025000003": {
+      "deviceInfo": {
+        "deviceId": "218LSAB2025000003",
+        "deviceType": "Sinocastel",
+        "protocolIds": [
+          "0x1001",
+          "0x3400"
+        ],
+        "firmwareVersion": "B4.3.9.2_BRL 2024-01-25 01",
+        "hardwareVersion": "D-218LSA-B  HDC-36V",
+        "installationDate": "2025-05-28",
+        "status": "active"
+      },
+      "vehicleSpecs": {
+        "brand": "Fiat",
+        "model": "Palio",
+        "year": "2006",
+        "plate": "SPO-5678",
+        "engine": {
+          "displacement": "2.0L",
+          "fuelType": "gasoline",
+          "power": "158 cv"
+        },
+        "fuel": {
+          "tankCapacityLiters": 65,
+          "fuelType": "gasoline",
+          "estimatedConsumption": "11.8 km/L cidade, 14.7 km/L estrada"
+        },
+        "transmission": "CVT",
+        "category": "Sedan"
+      },
+      "telemetryConfig": {
+        "currentFuel": {
+          "status": "UNRELIABLE",
+          "interpretation": "FALLBACK_VALUE",
+          "calibrated": false,
+          "notes": "Valor fixo 512 - sensor não funcional"
+        },
+        "totalFuel": {
+          "status": "RELIABLE",
+          "unit": "deciliters",
+          "conversion": "value / 10",
+          "calibrated": true
+        },
+        "odometer": {
+          "status": "LIMITED",
+          "interpretation": "trip_distance",
+          "notes": "Não representa hodômetro total do veículo"
+        }
+      },
+      "operationalData": {
+        "usage": "mobile",
+        "location": "São Paulo/RJ",
+        "averageSpeed": 45.2,
+        "totalDistance": 57.16,
+        "fuelConsumption": 17.3,
+        "lastUpdate": "2025-01-13"
+      },
+      "observations": {
+        "fuelGauge": "~50% conforme painel físico",
+        "odometerReading": 199120,
+        "issues": [
+          "currentFuel sempre 512 - não confiável",
+          "Painel mostra meio tanque coincide com telemetria 50%"
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "version": "1.0",
+    "lastUpdate": "2025-05-29T21:50:40.736Z",
+    "notes": "Registro criado após análise crítica dos dados de combustível",
+    "validation": {
+      "currentFuelReliability": "LOW - valor fixo 512 em ambos devices",
+      "totalFuelReliability": "HIGH - valores coerentes com movimento",
+      "photosValidation": "2025-01-13 - painéis físicos confirmam problemas"
+    }
+  }
+}

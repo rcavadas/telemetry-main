@@ -1,0 +1,46 @@
+{
+  "name": "obd-server",
+  "version": "1.0.0",
+  "description": "OBD Communication Server",
+  "main": "dist/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && cp -r src/views dist/ 2>/dev/null || true",
+    "start": "node dist/server.js",
+    "dev": "npm run build && npm start",
+    "test-tcp": "npx ts-node src/scripts/test-tcp-monitor.ts",
+    "setup": "mkdir -p data logs dist/views",
+    "setup:dirs": "mkdir -p data logs obd_data",
+    "setup:data": "node -e \"const fs=require('fs'); const path=require('path'); const dataDir='./data'; if(!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, {recursive:true}); const vehiclesPath=path.join(dataDir,'vehicle-registry.json'); if(!fs.existsSync(vehiclesPath)) fs.writeFileSync(vehiclesPath, JSON.stringify({vehicles:{},metadata:{created:new Date().toISOString(),version:'1.0.0',totalVehicles:0}}, null, 2)); console.log('✅ Estrutura de dados criada');\"",
+    "deploy": "npm run setup && npm run build && pm2 start dist/server.js --name server",
+    "test-decoder": "ts-node src/test-decoder.ts",
+    "log-viewer": "ts-node src/log-viewer.ts",
+    "logs-latest": "ts-node src/log-viewer.ts latest",
+    "logs-analyze": "ts-node src/log-viewer.ts analyze",
+    "logs-stats": "ts-node src/log-viewer.ts stats",
+    "analyze-3400": "ts-node src/analyze-3400.ts",
+    "reprocess-logs": "ts-node src/reprocess-logs.ts",
+    "analyze-structure": "ts-node src/analyze-structure.ts",
+    "test-coordinates": "ts-node src/test-coordinates.ts",
+    "debug-coordinates": "ts-node src/debug-coordinates.ts",
+    "test-scale-factor": "ts-node src/test-scale-factor.ts",
+    "extract-gps-path": "ts-node src/extract-gps-path.ts",
+    "logs": "ts-node src/test-real-logs.ts",
+    "coords": "ts-node src/test-coordinates.ts",
+    "gps": "ts-node src/extract-gps-path.ts",
+    "db": "ts-node src/database-cli.ts",
+    "populate": "ts-node src/populate-database.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "22.15.29",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "i": "^0.3.7"
+  }
+}

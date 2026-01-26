@@ -1,0 +1,232 @@
+# 🚗 Telemetry System - Cursor Rules
+
+## Project Context
+This is a **multi-protocol OBD telemetry system** with:
+- Dual server architecture (TCP + HTTP)
+- Modern web interface with glassmorphism design
+- Real-time hex decoder
+- Vehicle fleet management
+- REST API with 8 endpoints
+
+## Code Style Guidelines
+
+### TypeScript Standards
+- Use strict TypeScript with proper typing
+- Prefer interfaces over types for object shapes
+- Use async/await over promises chains
+- Implement proper error handling with try/catch
+
+### Node.js Patterns
+- Use native Node.js modules (fs, path, http, net)
+- Implement proper logging with custom Logger class
+- Use EventEmitter for server events
+- Handle process signals gracefully
+
+### File Organization
+```
+src/
+├── server.ts                 # Main server (TCP + HTTP)
+├── protocol-decoder.ts      # OBD protocol handling
+├── hex-decoder-service.ts   # Hex decoding logic
+├── logger.ts                # Centralized logging
+├── database.ts              # Data persistence
+└── crc-utils.ts             # CRC validation
+```
+
+## Architectural Patterns
+
+### Server Design
+- **OBDServer class** extends EventEmitter
+- **Dual ports**: 29479 (TCP/OBD) + 3000 (HTTP/API)
+- **Request routing** with URL parsing
+- **CORS enabled** for web interface
+
+### Data Management
+- **JSON-based persistence** (vehicle-registry.json)
+- **Automatic fallback** for missing files
+- **Real-time calculations** for operational data
+- **Robust error handling** with graceful degradation
+
+### API Design
+- **RESTful endpoints** with proper HTTP methods
+- **Consistent response format** (APIResponse interface)
+- **Processing time tracking** for performance
+- **Comprehensive error responses**
+
+## Key Features Implementation
+
+### Web Interface
+- **Single-page application** served from root
+- **Modal system** for vehicle editing
+- **Real-time hex decoder** with API integration
+- **Responsive design** with CSS Grid/Flexbox
+- **Glassmorphism styling** with backdrop-filter
+
+### Vehicle Management
+- **CRUD operations** via API
+- **Dynamic operational data** calculation
+- **Field validation** and sanitization
+- **Atomic updates** with JSON persistence
+
+### Hex Decoding
+- **Structured analysis** of OBD data
+- **Device ID extraction** from hex strings
+- **Protocol identification** and validation
+- **Comprehensive error reporting**
+
+## Development Guidelines
+
+### When Adding New Features
+1. **Add TypeScript interfaces** for new data structures
+2. **Implement proper logging** with contextual information
+3. **Create API endpoints** following REST conventions
+4. **Add error handling** with meaningful messages
+5. **Update web interface** if user-facing
+
+### When Fixing Bugs
+1. **Identify root cause** before implementing fix
+2. **Add fallback mechanisms** for robustness
+3. **Improve error messages** for better debugging
+4. **Test edge cases** and error conditions
+5. **Document the fix** in code comments
+
+### Code Quality Standards
+- **No hardcoded values** - use configuration
+- **Meaningful variable names** - self-documenting code
+- **Single responsibility** - one function, one purpose
+- **Proper async handling** - avoid callback hell
+- **Comprehensive error handling** - never silent failures
+
+## Common Patterns Used
+
+### HTTP Request Handling
+```typescript
+private async handleHttpRequest(req: IncomingMessage, res: ServerResponse): Promise<void> {
+  const startTime = Date.now();
+  const url = new URL(req.url || '', `http://localhost:${this.httpPort}`);
+  
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  
+  try {
+    // Route handling logic
+  } catch (error) {
+    this.sendHttpError(res, error.message, 500, startTime);
+  }
+}
+```
+
+### Data Loading with Fallback
+```typescript
+private loadData(): any {
+  try {
+    if (!fs.existsSync(filePath)) {
+      // Create default structure
+      return defaultData;
+    }
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch (error) {
+    Logger.warn('Fallback to default data', { error });
+    return defaultData;
+  }
+}
+```
+
+### API Response Format
+```typescript
+const response: APIResponse = {
+  success: true,
+  data: result,
+  timestamp: new Date().toISOString(),
+  processingTime: `${Date.now() - startTime}ms`
+};
+```
+
+## Debugging and Monitoring
+
+### Logging Levels
+- **DEBUG**: Detailed flow information
+- **INFO**: General operation status
+- **WARN**: Recoverable issues
+- **ERROR**: Serious problems requiring attention
+
+### Health Monitoring
+- Monitor server uptime and memory usage
+- Track API response times
+- Log all HTTP requests with user agents
+- Monitor file system operations
+
+### Error Tracking
+- Comprehensive error logging with context
+- Graceful fallbacks for missing resources
+- Clear error messages for API consumers
+- Process termination handling
+
+## Production Considerations
+
+### File System
+- Create directories if they don't exist
+- Handle permission issues gracefully
+- Use atomic file operations where possible
+- Implement proper backup strategies
+
+### Performance
+- Stream large responses when appropriate
+- Implement request timeouts
+- Use efficient JSON parsing
+- Monitor memory usage patterns
+
+### Security
+- Validate all input data
+- Sanitize user-provided content
+- Use HTTPS in production
+- Implement rate limiting if needed
+
+## Testing Strategy
+
+### Manual Testing Checklist
+- [ ] Health check endpoint responds
+- [ ] Vehicle data loads correctly
+- [ ] Hex decoder processes valid input
+- [ ] Web interface renders properly
+- [ ] Modal functionality works
+- [ ] File fallback mechanisms work
+- [ ] Error conditions handled gracefully
+
+### API Testing
+```bash
+# Health check
+curl http://localhost:3000/health
+
+# Vehicle listing
+curl http://localhost:3000/api/vehicles
+
+# Hex decoding
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"hex":"4040..."}' \
+  http://localhost:3000/api/decode-hex
+```
+
+## Deployment Process
+
+### Local Development
+```bash
+npm run build    # Compile TypeScript
+npm start        # Start server
+npm run dev      # Build + Start
+```
+
+### Production Setup
+```bash
+npm run setup    # Create directory structure
+npm run deploy   # Full deployment with PM2
+```
+
+### Monitoring Commands
+```bash
+pm2 status       # Check process status
+pm2 logs server  # View logs
+pm2 restart server  # Restart application
+```
+
+This project prioritizes **reliability**, **performance**, and **maintainability** while providing a modern, user-friendly interface for OBD telemetry management. 
