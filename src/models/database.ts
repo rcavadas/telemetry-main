@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Logger } from '../utils/logger';
+import { haversineDistanceMeters } from '../utils/distance-calculator';
 import { DecodedMessage } from '../protocols/protocol-decoder';
 
 export interface OBDReading {
@@ -18,6 +19,8 @@ export interface OBDReading {
   currentMileage?: number;
   totalFuel?: number;
   currentFuel?: number;
+  // Odometria derivada por GPS em metros (similar ao totalDistance do Traccar)
+  totalOdometer?: number;
   powerOn?: boolean;
   accOn?: boolean;
   ignitionOn?: boolean;
@@ -100,6 +103,11 @@ export class DatabaseManager {
 
   private saveData(data: OBDReading[]): void {
     fs.writeFileSync(this.dataPath, JSON.stringify(data, null, 2));
+  }
+
+  // Public method to save all data (for batch updates)
+  saveAllData(data: OBDReading[]): void {
+    this.saveData(data);
   }
 
   saveReading(decodedMessage: DecodedMessage, rawHex: string, auditInfo?: {
@@ -251,6 +259,98 @@ export class DatabaseManager {
       return data;
     } catch (error) {
       Logger.error('❌ Erro ao buscar trilha GPS', { error });
+      throw error;
+    }
+  }
+
+  getAllGPSReadings(deviceId?: string, limit?: number): OBDReading[] {
+    try {
+      let data = this.loadData();
+
+      // Filtrar apenas leituras com coordenadas GPS válidas (não zero)
+      data = data.filter(r => 
+        r.latitude != null && 
+        r.longitude != null &&
+        r.latitude !== 0 && 
+        r.longitude !== 0
+      );
+
+      // Filtrar por device ID se especificado
+      if (deviceId) {
+        data = data.filter(r => r.deviceId === deviceId);
+      }
+
+      // Ordenar por timestamp (mais recente primeiro)
+      data.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+      // Aplicar limite se especificado
+      if (limit && limit > 0) {
+        data = data.slice(0, limit);
+      }
+
+      return data;
+    } catch (error) {
+      Logger.error('❌ Erro ao buscar todas as leituras GPS', { error });
+      throw error;
+    }
+  }
+
+  /**
+   * Calcula a odometria aproximada (em metros) a partir das leituras de GPS,
+   * somando a distância entre pontos consecutivos (Haversine), de forma
+   * semelhante ao cálculo de totalDistance no Traccar.
+   */
+  getOdometerFromGps(deviceId: string): { totalMeters: number; totalKm: number; points: number } {
+    try {
+      const points = this.getGPSTrail(deviceId);
+
+      if (points.length < 2) {
+        return { totalMeters: 0, totalKm: 0, points: points.length };
+      }
+
+      let totalMeters = 0;
+
+      for (let i = 1; i < points.length; i++) {
+        const prev = points[i - 1];
+        const curr = points[i];
+
+        if (
+          prev.latitude != null && prev.longitude != null &&
+          curr.latitude != null && curr.longitude != null &&
+          prev.latitude !== 0 && prev.longitude !== 0 &&
+          curr.latitude !== 0 && curr.longitude !== 0
+        ) {
+          const segment = haversineDistanceMeters(
+            prev.latitude,
+            prev.longitude,
+            curr.latitude,
+            curr.longitude
+          );
+
+          // Proteger contra outliers extremamente grandes (ex: saltos de GPS)
+          if (segment > 0 && segment < 100000) {
+            totalMeters += segment;
+          } else {
+            Logger.debug('⚠️ Segmento de distância ignorado por ser irreal', {
+              deviceId,
+              from: { lat: prev.latitude, lon: prev.longitude },
+              to: { lat: curr.latitude, lon: curr.longitude },
+              segment,
+            });
+          }
+        }
+      }
+
+      return {
+        totalMeters: Math.round(totalMeters),
+        totalKm: Math.round((totalMeters / 1000) * 100) / 100, // duas casas decimais
+        points: points.length,
+      };
+    } catch (error) {
+      Logger.error('❌ Erro ao calcular odometria por GPS', {
+        deviceId,
+        error,
+      });
       throw error;
     }
   }

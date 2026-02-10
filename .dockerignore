@@ -1,0 +1,61 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Build output (será gerado dentro do container)
+dist
+
+# Source maps
+*.map
+
+# Git
+.git
+.gitignore
+.gitmodules
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Traccar reference repo (não é necessário no container)
+traccar
+
+# Tests
+tests
+
+# Documentation
+*.md
+!README.md
+
+# Temp files
+tmp/
+temp/
+tmp-route.json
+dummy.ipynb
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env.test
+.env.production
+
+# Logs (serão gerados em runtime via volume)
+logs/
+*.log
+
+# Reports gerados
+data/reports/*.md
+
+# Lock files alternativos
+pnpm-lock.yaml
+
+# Cursor
+.cursorrules
+.cursorignore

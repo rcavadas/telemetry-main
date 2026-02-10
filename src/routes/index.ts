@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { VehicleController } from '../controllers/vehicle-controller';
 import { HexDecoderController } from '../controllers/hex-decoder-controller';
+import { FileUploadController } from '../controllers/file-upload-controller';
 import { CorsMiddleware } from '../middleware/cors';
 import { APIResponse, HealthStatus } from '../types';
 import * as fs from 'fs';
@@ -9,11 +10,13 @@ import * as path from 'path';
 export class Router {
   private vehicleController: VehicleController;
   private hexDecoderController: HexDecoderController;
+  private fileUploadController: FileUploadController;
   private startTime: number;
 
   constructor() {
     this.vehicleController = new VehicleController();
     this.hexDecoderController = new HexDecoderController();
+    this.fileUploadController = new FileUploadController();
     this.startTime = Date.now();
   }
 
@@ -97,6 +100,12 @@ export class Router {
     // Hex decoder route
     if (pathname === '/api/decode-hex' && method === 'POST') {
       await this.hexDecoderController.decodeHex(req, res);
+      return;
+    }
+
+    // File upload route
+    if (pathname === '/api/upload-file' && method === 'POST') {
+      await this.fileUploadController.uploadFile(req, res);
       return;
     }
 

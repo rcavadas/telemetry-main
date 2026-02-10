@@ -1,0 +1,52 @@
+# =============================================================================
+# docker-compose.yml - Sistema de Telemetria Multi-Protocolo
+# =============================================================================
+#
+# Uso:
+#   docker compose up -d          → inicia em background
+#   docker compose up --build     → rebuilda e inicia
+#   docker compose logs -f        → acompanha logs
+#   docker compose down           → para tudo
+#
+# Dados persistentes ficam nos volumes mapeados (./data, ./obd_data, ./logs)
+# =============================================================================
+
+services:
+  telemetry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: telemetry-server
+    restart: unless-stopped
+
+    ports:
+      # Interface web + API REST
+      - "${HTTP_PORT:-3001}:3000"
+      # Servidor TCP para recepção de dados OBD
+      - "${TCP_PORT:-5087}:5086"
+
+    volumes:
+      # Persistir dados entre reinicializações do container
+      - ./data:/app/data
+      - ./obd_data:/app/obd_data
+      - ./logs:/app/logs
+
+    environment:
+      - NODE_ENV=production
+      - HTTP_PORT=3000
+      - TCP_PORT=5086
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+    # Limites de recursos (ajuste conforme necessidade)
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M

@@ -6,10 +6,15 @@ export enum LogLevel {
 }
 
 export class Logger {
-  private static currentLevel: LogLevel = LogLevel.INFO;
+  private static currentLevel: LogLevel = LogLevel.DEBUG; // Changed to DEBUG for troubleshooting
   
   public static setLevel(level: LogLevel) {
     this.currentLevel = level;
+  }
+  
+  // Enable debug logging for troubleshooting
+  public static enableDebug() {
+    this.currentLevel = LogLevel.DEBUG;
   }
 
   private static formatMessage(level: string, message: string, data?: any): string {

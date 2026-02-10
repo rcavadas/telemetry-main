@@ -1,6 +1,8 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { HexDecoderService } from '../services/hex-decoder-service';
 import { APIResponse, HexDecodeRequest, HexDecodeResult } from '../types';
+import { DatabaseManager } from '../models/database';
+import { Logger } from '../utils/logger';
 
 export class HexDecoderController {
   private hexDecoderService: HexDecoderService;
@@ -25,6 +27,47 @@ export class HexDecoderController {
       }
 
       const result = await HexDecoderService.decodeHex(requestData.hex);
+
+      // Save to database if decoding was successful and has valid data
+      if (result.success && result.decoded) {
+        try {
+          const dbManager = DatabaseManager.getInstance();
+          const cleanHex = requestData.hex.replace(/[\s\n\r]/g, '');
+          
+          // Prepare audit information for hex decoder
+          const auditInfo = {
+            clientId: 'hex-decoder-api',
+            context: 'DECODED_FROM_HEX_DECODER',
+            dataLength: `${cleanHex.length / 2} bytes`,
+            asciiRepresentation: Buffer.from(cleanHex, 'hex').toString('ascii').replace(/[^\x20-\x7E]/g, '.'),
+            byteArray: Array.from(Buffer.from(cleanHex, 'hex')),
+            originalJsonObject: {
+              source: 'hex-decoder-api',
+              timestamp: new Date().toISOString(),
+              hexLength: cleanHex.length,
+              decoded: true
+            }
+          };
+
+          const readingId = dbManager.saveReading(result.decoded, cleanHex, auditInfo);
+          
+          Logger.info('💾 Dados do hex decoder salvos no banco', {
+            readingId,
+            deviceId: result.decoded.deviceId,
+            hasGPS: !!(result.decoded.gps && result.decoded.gps.latitude && result.decoded.gps.longitude)
+          });
+
+          // Add saved flag to response
+          result.savedToDatabase = true;
+          result.readingId = readingId;
+        } catch (dbError) {
+          Logger.warn('⚠️ Erro ao salvar dados do hex decoder no banco', {
+            error: dbError instanceof Error ? dbError.message : String(dbError)
+          });
+          // Don't fail the request if database save fails
+          result.savedToDatabase = false;
+        }
+      }
 
       const response: APIResponse<any> = {
         success: true,

@@ -80,22 +80,22 @@
         "status": "active"
       },
       "vehicleSpecs": {
-        "brand": "Honda",
-        "model": "Civic",
-        "year": "2021",
+        "brand": "Citroen",
+        "model": "C4 VTR",
+        "year": "2009",
         "plate": "SPO-5678",
         "engine": {
           "displacement": "2.0L",
           "fuelType": "gasoline",
-          "power": "158 cv"
+          "power": "143 cv"
         },
         "fuel": {
-          "tankCapacityLiters": 65,
-          "fuelType": "gasoline",
+          "tankCapacityLiters": 60,
+          "fuelType": "",
           "estimatedConsumption": "11.8 km/L cidade, 14.7 km/L estrada"
         },
         "transmission": "CVT",
-        "category": "Sedan"
+        "category": "Hatch"
       },
       "telemetryConfig": {
         "currentFuel": {
@@ -118,11 +118,11 @@
       },
       "operationalData": {
         "usage": "mobile",
-        "location": "São Paulo/RJ",
+        "location": "Rua Tenente Ronaldo Santos, Campo Grande, Rio de Janeiro, Rio de Janeiro",
         "averageSpeed": 45.2,
-        "totalDistance": 57.16,
+        "totalDistance": 199120,
         "fuelConsumption": 17.3,
-        "lastUpdate": "2025-01-13"
+        "lastUpdate": "2026-02-09T23:41:56.055Z"
       },
       "observations": {
         "fuelGauge": "~50% conforme painel físico",
@@ -147,22 +147,22 @@
         "status": "active"
       },
       "vehicleSpecs": {
-        "brand": "Fiat",
-        "model": "Palio",
-        "year": "2006",
+        "brand": "Peugeot",
+        "model": "Partner",
+        "year": "2021",
         "plate": "SPO-5678",
         "engine": {
-          "displacement": "2.0L",
+          "displacement": "1.6",
           "fuelType": "gasoline",
-          "power": "158 cv"
+          "power": "122 cv"
         },
         "fuel": {
-          "tankCapacityLiters": 65,
-          "fuelType": "gasoline",
+          "tankCapacityLiters": 55,
+          "fuelType": "Gasolina",
           "estimatedConsumption": "11.8 km/L cidade, 14.7 km/L estrada"
         },
-        "transmission": "CVT",
-        "category": "Sedan"
+        "transmission": "Manual",
+        "category": "Utilitário"
       },
       "telemetryConfig": {
         "currentFuel": {
@@ -185,19 +185,139 @@
       },
       "operationalData": {
         "usage": "mobile",
-        "location": "São Paulo/RJ",
+        "location": "Rua Afranio Barreto, Jardim Imperial, Itaboraí, Rio de Janeiro",
         "averageSpeed": 45.2,
-        "totalDistance": 57.16,
+        "totalDistance": 8239,
         "fuelConsumption": 17.3,
-        "lastUpdate": "2025-01-13"
+        "lastUpdate": "2026-02-09T23:42:02.385Z"
       },
       "observations": {
         "fuelGauge": "~50% conforme painel físico",
-        "odometerReading": 199120,
+        "odometerReading": 8239,
         "issues": [
           "currentFuel sempre 512 - não confiável",
           "Painel mostra meio tanque coincide com telemetria 50%"
         ]
+      }
+    },
+    "218LSAB2025000001": {
+      "deviceInfo": {
+        "deviceId": "218LSAB2025000001",
+        "deviceType": "OBD",
+        "protocolIds": [],
+        "firmwareVersion": "unknown",
+        "hardwareVersion": "unknown",
+        "installationDate": "2026-01-28T13:28:23.301Z",
+        "status": "active"
+      },
+      "vehicleSpecs": {
+        "brand": "Effa",
+        "model": "V-21",
+        "year": "2025",
+        "engine": {
+          "displacement": "1.3",
+          "fuelType": "Gasolina",
+          "power": ""
+        },
+        "fuel": {
+          "tankCapacityLiters": 40,
+          "fuelType": "Gasolina",
+          "estimatedConsumption": ""
+        },
+        "transmission": "Manual",
+        "category": "Utilitário VUC"
+      },
+      "telemetryConfig": {
+        "currentFuel": {
+          "status": "RELIABLE",
+          "interpretation": "Percentage from 0-1024",
+          "calibrated": false,
+          "notes": ""
+        },
+        "totalFuel": {
+          "status": "RELIABLE",
+          "unit": "liters",
+          "conversion": "1:1",
+          "calibrated": false
+        },
+        "odometer": {
+          "status": "PENDING",
+          "interpretation": "",
+          "notes": ""
+        }
+      },
+      "operationalData": {
+        "usage": "daily",
+        "location": "Rua Campo Formoso, Campo Grande, Rio de Janeiro, Rio de Janeiro",
+        "averageSpeed": 0,
+        "totalDistance": 2554,
+        "fuelConsumption": 0,
+        "lastUpdate": "2026-02-09T23:42:10.705Z"
+      },
+      "observations": {
+        "fuelGauge": "",
+        "odometerReading": 2554,
+        "issues": []
+      }
+    },
+    "234LSA2025000101": {
+      "deviceInfo": {
+        "deviceId": "234LSA2025000101",
+        "deviceType": "OBD",
+        "protocolIds": [],
+        "firmwareVersion": "unknown",
+        "hardwareVersion": "unknown",
+        "installationDate": "2026-02-09T22:45:53.962Z",
+        "status": "active"
+      },
+      "vehicleSpecs": {
+        "brand": "OEM",
+        "model": "001",
+        "year": "",
+        "engine": {
+          "displacement": "",
+          "fuelType": "gasoline",
+          "power": ""
+        },
+        "fuel": {
+          "tankCapacityLiters": 60,
+          "fuelType": "",
+          "estimatedConsumption": ""
+        },
+        "transmission": "",
+        "category": "Moto"
+      },
+      "telemetryConfig": {
+        "currentFuel": {
+          "status": "RELIABLE",
+          "interpretation": "Percentage from 0-1024",
+          "calibrated": false,
+          "notes": ""
+        },
+        "totalFuel": {
+          "status": "RELIABLE",
+          "unit": "liters",
+          "conversion": "1:1",
+          "calibrated": false
+        },
+        "odometer": {
+          "status": "PENDING",
+          "interpretation": "",
+          "notes": ""
+        }
+      },
+      "operationalData": {
+        "usage": "daily",
+        "location": "Rua Tenente Ronaldo Santos, Campo Grande, Rio de Janeiro, Rio de Janeiro",
+        "averageSpeed": 0,
+        "totalDistance": 0,
+        "fuelConsumption": 0,
+        "lastUpdate": "2026-02-09T23:42:12.430Z"
+      },
+      "observations": {
+        "fuelGauge": "",
+        "odometerReading": 0,
+        "issues": []
       }
     }
   },
@@ -209,6 +329,8 @@
       "currentFuelReliability": "LOW - valor fixo 512 em ambos devices",
       "totalFuelReliability": "HIGH - valores coerentes com movimento",
       "photosValidation": "2025-01-13 - painéis físicos confirmam problemas"
-    }
+    },
+    "lastModified": "2026-02-09T23:24:48.364Z",
+    "totalVehicles": 5
   }
 }

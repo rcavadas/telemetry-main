@@ -12,6 +12,8 @@ export interface HexDecodeResult {
   };
   error?: string;
   timestamp: string;
+  savedToDatabase?: boolean;
+  readingId?: number;
 }
 
 export class HexDecoderService {
@@ -87,16 +89,54 @@ export class HexDecoderService {
           timestamp
         };
       } else {
-        Logger.warn('⚠️ Falha na decodificação via API', {
+        // Diagnóstico detalhado para ajudar a identificar o problema
+        const diagnostic: any = {
           hexLength: cleanHex.length,
           bufferSize: buffer.length,
-          header: analysis.header
-        });
+          header: analysis.header,
+          expectedHeader: '4040'
+        };
+        
+        // Verificar se o header está correto
+        if (analysis.header !== '4040') {
+          diagnostic.headerMismatch = true;
+        }
+        
+        // Verificar protocolos possíveis nas posições esperadas
+        if (buffer.length >= 27) {
+          const protocolAt25 = buffer.length > 26 ? buffer.readUInt16BE(25).toString(16).toUpperCase() : 'N/A';
+          const protocolAt26 = buffer.length > 27 ? buffer.readUInt16BE(26).toString(16).toUpperCase() : 'N/A';
+          const protocolAt24 = buffer.length > 25 ? buffer.readUInt16BE(24).toString(16).toUpperCase() : 'N/A';
+          
+          diagnostic.protocolChecks = {
+            atOffset25: `0x${protocolAt25}`,
+            atOffset26: `0x${protocolAt26}`,
+            atOffset24: `0x${protocolAt24}`,
+            expected: ['0x1001', '0x100A', '0x4001', '0x4009', '0xA002', '0x40XX (variants)', '0x3400', 'any with 0x4040 header']
+          };
+          
+          // Verificar se há 0x3400 entre offsets 30-40
+          const protocol3400Found = [];
+          for (let offset = 30; offset <= Math.min(40, buffer.length - 2); offset++) {
+            const protocolHex = buffer.subarray(offset, offset + 2).toString('hex').toUpperCase();
+            if (protocolHex === '3400' || protocolHex === '0034') {
+              protocol3400Found.push({ offset, hex: protocolHex });
+            }
+          }
+          if (protocol3400Found.length > 0) {
+            diagnostic.protocol3400Found = protocol3400Found;
+          }
+        }
+        
+        // Adicionar preview dos primeiros bytes para debug
+        diagnostic.hexPreview = cleanHex.substring(0, 100) + (cleanHex.length > 100 ? '...' : '');
+        
+        Logger.warn('⚠️ Falha na decodificação via API', diagnostic);
         
         return {
           success: false,
           analysis,
-          error: 'Não foi possível decodificar os dados. Possíveis causas: header inválido, protocolo não suportado, dados corrompidos',
+          error: 'Não foi possível decodificar os dados. Possíveis causas: header inválido, protocolo não suportado, dados corrompidos. Verifique os logs para detalhes do diagnóstico.',
           timestamp
         };
       }

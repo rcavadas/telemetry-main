@@ -2,7 +2,7 @@ import { ServerConfig } from '../types';
 
 export const config: ServerConfig = {
   tcp: {
-    port: 29479,
+    port: 5086,
     host: '0.0.0.0',
     timeout: 300000 // 5 minutes
   },

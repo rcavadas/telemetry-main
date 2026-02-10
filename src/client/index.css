@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/95 backdrop-blur-lg shadow-xl;
+  }
+  
+  .card {
+    @apply glass-effect rounded-2xl p-6 shadow-lg;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg 
+           font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-200 
+           shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold 
+           hover:bg-gray-300 transition-all duration-200;
+  }
+}
+
+/* Estilos para marcadores de veículos no mapa (estilo Traccar) */
+.arrow-marker-traccar {
+  background: transparent !important;
+  border: none !important;
+  text-align: center;
+}
+
+.arrow-marker-traccar svg {
+  transition: transform 0.2s ease;
+}
+
+.arrow-marker-traccar:hover svg {
+  transform: scale(1.2);
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4)) !important;
+}
